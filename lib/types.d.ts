@@ -71,9 +71,11 @@ export type EnqueuedDeleteChange = {
 
 export type Annotations = Map<string, any>;
 
-declare type PromiseDict = {
-  [key: string]: Promise<any>;
+type PromiseDict = { [key: string]: Promise<any> };
+type ResolvedPromiseDict<D> = {
+  [K in keyof D]: Awaited<D[K]>;
 };
+
 export declare class ApiError extends Errawr {
   get name(): string;
 }
@@ -92,7 +94,7 @@ export declare class Api {
       fd?: FileHandle;
     }
   ): Promise<Annotations | null>;
-  read(path: string, options: ReadOptions): Promise<string>;
+  read(path: string, options?: ReadOptions): Promise<string>;
   write(
     path: string,
     content: string | Error,
@@ -100,7 +102,15 @@ export declare class Api {
   ): Promise<void>;
   generate(
     path: string,
-    cb: (path: string, deps: Record<string, never>) => Promise<string>
+    cb: (path: string, deps: Record<string, never>) => Promise<string | null>
+  ): Promise<void>;
+  generate<D extends PromiseDict>(
+    path: string,
+    deps: D,
+    cb: (
+      path: string,
+      resolvedDeps: ResolvedPromiseDict<D>
+    ) => Promise<string | null>
   ): Promise<void>;
 }
 
