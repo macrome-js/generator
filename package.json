@@ -1,0 +1,23 @@
+{
+  "name": "@macrome/generator",
+  "version": "0.1.0",
+  "description": "Types and helpers useful for building macrome generators",
+  "main": "lib/index",
+  "files": [
+    "lib/**/*"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.16",
+    "errawr": "github:conartist6/errawr",
+    "typescript": "^4.5.5"
+  },
+  "repository": "git@github.com:macrome-js/generator.git",
+  "author": "Conrad Buck <conartist6@gmail.com>",
+  "keywords": [
+    "macrome",
+    "generate",
+    "generator",
+    "base"
+  ]
+}
