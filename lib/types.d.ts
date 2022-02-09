@@ -102,14 +102,15 @@ export declare class Api {
   ): Promise<void>;
   generate(
     path: string,
-    cb: (path: string, deps: Record<string, never>) => Promise<string | null>
+    cb: (
+      props: { destPath: string } & Record<string, never>
+    ) => Promise<string | null>
   ): Promise<void>;
   generate<D extends PromiseDict>(
     path: string,
     deps: D,
     cb: (
-      path: string,
-      resolvedDeps: ResolvedPromiseDict<D>
+      props: { destPath: string } & ResolvedPromiseDict<D>
     ) => Promise<string | null>
   ): Promise<void>;
 }
