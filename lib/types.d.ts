@@ -41,33 +41,30 @@ export type ReportedChange =
   | ReportedModifyChange
   | ReportedDeleteChange;
 
-export type EnqueuedChange =
-  | EnqueuedAddChange
-  | EnqueuedModifyChange
-  | EnqueuedDeleteChange;
-
-export type MappableChange = EnqueuedAddChange | EnqueuedModifyChange;
-
-export type EnqueuedAddChange = {
+export type AddChange = {
   op: "A";
   path: string;
   reported: ReportedAddChange;
   annotations: Annotations | null;
 };
 
-export type EnqueuedModifyChange = {
+export type ModifyChange = {
   op: "M";
   path: string;
   reported: ReportedModifyChange;
   annotations: Annotations | null;
 };
 
-export type EnqueuedDeleteChange = {
+export type DeleteChange = {
   op: "D";
   path: string;
   reported: ReportedDeleteChange;
   annotations: null;
 };
+
+export type Change = AddChange | ModifyChange | DeleteChange;
+
+export type MappableChange = AddChange | ModifyChange;
 
 export type Annotations = Map<string, any>;
 
@@ -119,8 +116,8 @@ export declare class GeneratorApi extends Api {
   get generatorPath(): string;
 }
 
-export declare class MapChangeApi extends GeneratorApi {
-  get change(): EnqueuedChange;
+export declare class MapApi extends GeneratorApi {
+  get change(): Change;
   get version(): string;
 }
 
@@ -143,7 +140,7 @@ export interface Generator<O, T> extends AsymmetricMMatchExpression {
 
   initialize?(api: GeneratorApi): Promise<unknown>;
 
-  map?(api: MapChangeApi, change: EnqueuedChange): Promise<T>;
+  map?(api: MapApi, change: Change): Promise<T>;
 
   reduce?(api: GeneratorApi, mappings: Map<string, T>): Promise<unknown>;
 
